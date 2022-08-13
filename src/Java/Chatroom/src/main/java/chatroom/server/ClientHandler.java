@@ -7,7 +7,6 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
-// реализуем интерфейс Runnable, который позволяет работать с потоками
 public final class ClientHandler implements Runnable {
 
     private Server server;
@@ -28,8 +27,8 @@ public final class ClientHandler implements Runnable {
             this.clientSocket = socket;
             this.outMessage = new PrintWriter(socket.getOutputStream());
             this.inMessage  = new Scanner(socket.getInputStream());
-        } catch (IOException ex) {
-            ex.printStackTrace();
+        } catch (IOException exception) {
+            exception.printStackTrace();
         }
     }
 
@@ -53,19 +52,19 @@ public final class ClientHandler implements Runnable {
                 }
                 Thread.sleep(100);
             }
-        } catch (InterruptedException ex) {
-            ex.printStackTrace();
+        } catch (InterruptedException exception) {
+            exception.printStackTrace();
         } finally {
             this.close();
         }
     }
 
-    public void sendMsg(String msg) {
+    public void sendMsg(String message) {
         try {
-            outMessage.println(msg);
+            outMessage.println(message);
             outMessage.flush();
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
     }
 

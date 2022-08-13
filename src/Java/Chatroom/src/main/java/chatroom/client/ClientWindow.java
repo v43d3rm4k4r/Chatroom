@@ -10,11 +10,11 @@ import java.util.Scanner;
 public final class ClientWindow extends JFrame {
 
     private static final String SERVER_HOST = "localhost";
-    private static final int SERVER_PORT = 3443;
+    private static final int SERVER_PORT    = 3443;
 
     private Socket clientSocket;
 
-    private Scanner inMessage;
+    private Scanner     inMessage;
     private PrintWriter outMessage;
 
     private final JTextField jtfMessage;
@@ -28,8 +28,8 @@ public final class ClientWindow extends JFrame {
             clientSocket = new Socket(SERVER_HOST, SERVER_PORT);
             inMessage    = new Scanner(clientSocket.getInputStream());
             outMessage   = new PrintWriter(clientSocket.getOutputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException exception) {
+            exception.printStackTrace();
         }
 
         setBounds(600, 300, 600, 500);
@@ -54,7 +54,7 @@ public final class ClientWindow extends JFrame {
         jtfName = new JTextField("Enter your name: ");
         bottomPanel.add(jtfName, BorderLayout.WEST);
 
-        jbSendMessage.addActionListener(e -> {
+        jbSendMessage.addActionListener(event -> {
             if (!jtfMessage.getText().trim().isEmpty() && !jtfName.getText().trim().isEmpty()) {
                 clientName = jtfName.getText();
                 sendMsg();
@@ -64,14 +64,14 @@ public final class ClientWindow extends JFrame {
 
         jtfMessage.addFocusListener(new FocusAdapter() {
             @Override
-            public void focusGained(FocusEvent e) {
+            public void focusGained(FocusEvent event) {
                 jtfMessage.setText("");
             }
         });
 
         jtfName.addFocusListener(new FocusAdapter() {
             @Override
-            public void focusGained(FocusEvent e) {
+            public void focusGained(FocusEvent event) {
                 jtfName.setText("");
             }
         });
@@ -90,15 +90,16 @@ public final class ClientWindow extends JFrame {
                         }
                     }
                 }
-            } catch (Exception e) {
+            } catch (Exception exception) {
+                exception.printStackTrace();
             }
         }).start();
 
         // On exit
         addWindowListener(new WindowAdapter() {
             @Override
-            public void windowClosing(WindowEvent e) {
-                super.windowClosing(e);
+            public void windowClosing(WindowEvent event) {
+                super.windowClosing(event);
                 try {
                     if (!clientName.isEmpty() && !clientName.equals("Enter your name: ")) {
                         outMessage.println(clientName + " exit the chat!");
@@ -111,7 +112,7 @@ public final class ClientWindow extends JFrame {
                     outMessage.close();
                     inMessage.close();
                     clientSocket.close();
-                } catch (IOException exc) {
+                } catch (IOException exception) {
 
                 }
             }
